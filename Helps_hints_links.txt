@@ -1,0 +1,1 @@
+https://medium.com/@xnel417x/simple-english-to-french-translation-app-using-python-streamlit-and-helsinki-nlp-opus-mt-e94bec8b2883
