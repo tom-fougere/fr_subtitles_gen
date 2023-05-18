@@ -20,7 +20,7 @@ def read_srt(srt_file_path):
     srt_matches = re.findall(srt_regex, srt_data, re.DOTALL)
 
     # Extract each data
-    srt_data_list = [(int(m[0]), m[1], m[2], m[3].replace('\n', ' ')) for m in srt_matches]
+    srt_data_list = [(int(m[0]), m[1], m[2], m[3].replace('\n', ' ').strip()) for m in srt_matches]
 
     return pd.DataFrame(srt_data_list, columns=list(COLUMNS_NAME.values()))
 
@@ -32,4 +32,4 @@ def write_srt_file(df, column_name_sentence, output_file_path):
             # Build each line
             f.write(str(row[COLUMNS_NAME['id']]) + '\n')
             f.write(row[COLUMNS_NAME['start_time']] + ' --> ' + row[COLUMNS_NAME['end_time']] + '\n')
-            f.write(row[column_name_sentence] + '\n\n')
+            f.write(row[column_name_sentence].strip() + '\n\n')
