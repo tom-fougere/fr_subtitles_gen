@@ -8,10 +8,12 @@ class SRTranslator:
         self.target_language = target_language
         self.max_length = max_length
         self.default_model = True
-        self.model = f"Helsinki-NLP/opus-mt-en-{self.target_language}"
+        self.model_name = f"Helsinki-NLP/opus-mt-en-{self.target_language}"
+        self.model = pipeline("translation", model=self.model_name)
         self.tokenizer = None
 
-    def set_model(self, model, tokenizer):
+    def set_model(self, model, tokenizer, model_name=None):
+        self.model_name = "Custom" if model_name is None else model_name
         self.model = model
         self.tokenizer = tokenizer
         self.default_model = False
@@ -22,11 +24,8 @@ class SRTranslator:
         sentence = f'{sentence.strip()}'
 
         if self.default_model:
-            # Initialize the translation pipeline
-            translator = pipeline("translation", model=self.model)
-
             # Translate the sentence
-            translated_sentence = translator(sentence, max_length=self.max_length)[0]['translation_text']
+            translated_sentence = self.model(sentence, max_length=self.max_length)[0]['translation_text']
 
         else:
             # Add start and end of sentence tokens and tokenize the input

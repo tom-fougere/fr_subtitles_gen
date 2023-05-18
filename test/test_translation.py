@@ -11,14 +11,7 @@ class SRTranslationTest(unittest.TestCase):
         self.assertEqual(srt_translator.target_language, "fr")
         self.assertEqual(srt_translator.max_length, 512)
         self.assertEqual(srt_translator.default_model, True)
-        self.assertEqual(srt_translator.model, "Helsinki-NLP/opus-mt-en-fr")
-        self.assertEqual(srt_translator.tokenizer, None)
-
-        srt_translator = SRTranslator(target_language='en', max_length=256)
-        self.assertEqual(srt_translator.target_language, "en")
-        self.assertEqual(srt_translator.max_length, 256)
-        self.assertEqual(srt_translator.default_model, True)
-        self.assertEqual(srt_translator.model, "Helsinki-NLP/opus-mt-en-en")
+        self.assertEqual(srt_translator.model_name, "Helsinki-NLP/opus-mt-en-fr")
         self.assertEqual(srt_translator.tokenizer, None)
 
     def test_set_model(self):
@@ -26,6 +19,7 @@ class SRTranslationTest(unittest.TestCase):
         srt_translator.set_model(model="test_model", tokenizer="test_tokenizer")
 
         self.assertEqual(srt_translator.default_model, False)
+        self.assertEqual(srt_translator.model_name, "Custom")
         self.assertEqual(srt_translator.model, "test_model")
         self.assertEqual(srt_translator.tokenizer, "test_tokenizer")
 
@@ -58,7 +52,7 @@ class SRTranslationTest(unittest.TestCase):
 
     def test_translate_file(self):
         srt_translator = SRTranslator()
-        df = srt_translator.translate_file("english_subtitles.srt")
+        df = srt_translator.translate_file("test/english_subtitles.srt")
 
         self.assertEqual(len(df), 2)
         self.assertEqual(df['sentence_translated'][0], "Bonjour monde")
